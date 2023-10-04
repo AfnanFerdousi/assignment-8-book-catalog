@@ -8,6 +8,14 @@ const createUser = catchAsync(async (req, res) => {
     const userData = req.body;
     const newUser = await authService.createUserService(userData);
 
+    if (!newUser) {
+        return sendResponse<User>(res, {
+            statusCode: httpStatus.NOT_FOUND,
+            success: false,
+            message: "Data not found",
+        });
+    }
+
     sendResponse<User>(res, {
         statusCode: httpStatus.OK,
         success: true,
