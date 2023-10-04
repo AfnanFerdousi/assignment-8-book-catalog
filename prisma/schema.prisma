@@ -12,8 +12,8 @@ datasource db {
 
 // Define the enum for role
 enum Role {
-  Admin
-  Customer
+  admin
+  customer
 }
 
 model User {
@@ -21,12 +21,13 @@ model User {
   name            String
   email           String            @unique
   password        String
-  role            Role // Use an enum type for role
+  role            Role              @default(customer)
   contactNo       String
   address         String
   profileImg      String
   ReviewAndRating ReviewAndRating[]
   Order           Order[]
+  
 }
 
 model Category {
