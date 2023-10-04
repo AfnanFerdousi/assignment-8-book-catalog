@@ -16,6 +16,12 @@ const createBookService = async (book: Book, userPayload: JwtPayload | null): Pr
     return newBook;
 }
 
+const getAllBooksService = async (): Promise<Book[]> => {
+    const books = await prisma.book.findMany();
+    return books;
+}
+
 export default {
-    createBookService
+    createBookService,
+    getAllBooksService
 }
