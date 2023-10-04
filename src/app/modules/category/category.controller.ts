@@ -6,7 +6,8 @@ import { Category } from "@prisma/client";
 import categoryService from "./category.service";
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
-    const category = await categoryService.createCategoryService(req.body);
+    const userPayload = req.user;
+    const category = await categoryService.createCategoryService(req.body, userPayload);
     sendResponse<Category>(res, {
         statusCode: httpStatus.OK,
         success: true,
