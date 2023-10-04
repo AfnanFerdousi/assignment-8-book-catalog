@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post("/create-category", auth("admin"), categoryController.createCategory);
 router.get("/", categoryController.getAllCategories)
+router.get('/:id', categoryController.getSingleCategory);
 
 export default router;

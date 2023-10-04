@@ -27,7 +27,20 @@ const getAllCategories = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
+    const categoryId = req.params.id;
+
+    const category = await categoryService.getSingleCategoryService(categoryId);
+    sendResponse<Category>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        data: category,
+        message: "Successfully found category",
+    })
+})
+
 export default {
     createCategory,
-    getAllCategories
+    getAllCategories,
+    getSingleCategory
 }

@@ -20,7 +20,20 @@ const getAllCategoriesService = async (): Promise<Category[]> => {
     return categories;
 };
 
+const getSingleCategoryService = async (categoryId: string): Promise<Category | null> => {
+    if(!categoryId) {
+        throw new ApiError(httpStatus.BAD_REQUEST, "BAD_REQUEST");
+    }
+    const category = await prisma.category.findUnique({
+        where: {
+            id: categoryId,
+        },
+    });
+    return category;
+}
+
 export default {
     createCategoryService,
     getAllCategoriesService,
+    getSingleCategoryService
 };
