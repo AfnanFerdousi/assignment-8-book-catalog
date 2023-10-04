@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post("/create-book", auth("admin"), bookController.createBook);
 router.get("/", bookController.getAllBooks);
+router.get('/:id', bookController.getSingleBook);
 
 export default router;
