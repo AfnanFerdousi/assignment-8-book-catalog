@@ -5,22 +5,22 @@ import userService from "./user.service";
 import { User } from '@prisma/client';
 import  httpStatus  from 'http-status';
 
-const getUsers = () => catchAsync(async (req: Request, res: Response) => {
+const getUsers = catchAsync(async (req: Request, res: Response) => {
    console.log("in")
 
     // const users = userService.getUsersService(user);
-    // const users = await userService.getUsersService();
-    // console.log(users)
-    // sendResponse<User[]>(res, {
-    //     statusCode: httpStatus.OK,
-    //     success: true,
-    //     data: users,
-    //     message: "Successfully found all users",
-    // });
+    const users = await userService.getUsersService();
+    console.log(users)
+    sendResponse<User[]>(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        data: users,
+        message: "Successfully found all users",
+    });
 })
 
 
-const getSingleUser = () => catchAsync(async (req: Request, res: Response) => {
+const getSingleUser =  catchAsync(async (req: Request, res: Response) => {
     console.log("in")
     const userId = req.params.id;
     console.log(userId)
@@ -34,7 +34,7 @@ const getSingleUser = () => catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-const updateUser = () => catchAsync(async (req: Request, res: Response) => {
+const updateUser = catchAsync(async (req: Request, res: Response) => {
     const userId = req.params.id;
     const user = await userService.updateUserService(userId, req.body);
 
@@ -46,7 +46,7 @@ const updateUser = () => catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-const deleteUser = () => catchAsync(async (req: Request, res: Response) => {
+const deleteUser =  catchAsync(async (req: Request, res: Response) => {
     const userId = req.params.id;
     const user = await userService.deleteUserService(userId);
 
