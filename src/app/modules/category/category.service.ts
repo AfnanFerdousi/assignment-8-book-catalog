@@ -32,8 +32,36 @@ const getSingleCategoryService = async (categoryId: string): Promise<Category | 
     return category;
 }
 
+const updateCategoryService = async (categoryId: string, userPayload: JwtPayload | null, category: Category): Promise<Category> => {
+    if (userPayload?.role !== "admin") {
+        throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
+    const updatedCategory = await prisma.category.update({
+        where: {
+            id: categoryId,
+        },
+        data: category,
+    });
+    return updatedCategory;
+}
+
+const deleteCategoryService = async (categoryId: string, userPayload: JwtPayload | null): Promise<Category> => {
+    if (userPayload?.role !== "admin") {
+        throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
+    const deletedCategory = await prisma.category.delete({
+        where: {
+            id: categoryId,
+        },
+    })
+    return deletedCategory;
+}
+
+
 export default {
     createCategoryService,
     getAllCategoriesService,
-    getSingleCategoryService
+    getSingleCategoryService,
+    updateCategoryService,
+    deleteCategoryService
 };
