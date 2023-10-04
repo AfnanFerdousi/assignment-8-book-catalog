@@ -5,16 +5,6 @@ import httpStatus  from 'http-status';
 
 const prisma = new PrismaClient();
 
-// const getUsersService = (user: JwtPayload | null): Promise<User[]> => {
-//     if (!user) {
-//         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-//     }
-    
-//     const users = prisma.user.findMany({})
-//     console.log(users)
-//     return users
-// };
-
 const getUsersService = async (userPayload: JwtPayload | null): Promise<User[]> => {
     if(userPayload?.role !== "admin"){
         throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
