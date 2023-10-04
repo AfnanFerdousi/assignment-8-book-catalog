@@ -15,6 +15,12 @@ const createCategoryService = async (category: Category, userPayload: JwtPayload
     return newCategory;
 };
 
+const getAllCategoriesService = async (): Promise<Category[]> => {
+    const categories = await prisma.category.findMany();
+    return categories;
+};
+
 export default {
     createCategoryService,
+    getAllCategoriesService,
 };
