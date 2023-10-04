@@ -6,10 +6,10 @@ import { User } from '@prisma/client';
 import  httpStatus  from 'http-status';
 
 const getUsers = catchAsync(async (req: Request, res: Response) => {
-   console.log("in")
+ const userPayload = req.user;
 
     // const users = userService.getUsersService(user);
-    const users = await userService.getUsersService();
+    const users = await userService.getUsersService(userPayload);
     console.log(users)
     sendResponse<User[]>(res, {
         statusCode: httpStatus.OK,
@@ -21,10 +21,10 @@ const getUsers = catchAsync(async (req: Request, res: Response) => {
 
 
 const getSingleUser =  catchAsync(async (req: Request, res: Response) => {
-    console.log("in")
+    const userPayload = req.user
     const userId = req.params.id;
     console.log(userId)
-    const user = await userService.getSingleUserService(userId);
+    const user = await userService.getSingleUserService(userPayload, userId);
 
     sendResponse<User>(res, {
         statusCode: httpStatus.OK,
@@ -35,8 +35,9 @@ const getSingleUser =  catchAsync(async (req: Request, res: Response) => {
 })
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
+     const userPayload = req.user;
     const userId = req.params.id;
-    const user = await userService.updateUserService(userId, req.body);
+    const user = await userService.updateUserService(userId,userPayload, req.body);
 
     sendResponse<User>(res, {
         statusCode: httpStatus.OK,
@@ -46,9 +47,10 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-const deleteUser =  catchAsync(async (req: Request, res: Response) => {
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+    const userPayload = req.user;
     const userId = req.params.id;
-    const user = await userService.deleteUserService(userId);
+    const user = await userService.deleteUserService(userId, userPayload);
 
     sendResponse<User>(res, {
         statusCode: httpStatus.OK,

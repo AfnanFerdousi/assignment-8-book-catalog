@@ -15,7 +15,10 @@ const prisma = new PrismaClient();
 //     return users
 // };
 
-const getUsersService = async (): Promise<User[]> => {
+const getUsersService = async (userPayload: JwtPayload | null): Promise<User[]> => {
+    if(userPayload?.role !== "admin"){
+        throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
     const users = await prisma.user.findMany({})
     console.log(users)
 
@@ -23,7 +26,11 @@ const getUsersService = async (): Promise<User[]> => {
 }
 
 
-const getSingleUserService = async(userId: string): Promise<User> => {
+const getSingleUserService = async (userPayload: JwtPayload | null, userId: string): Promise<User> => {
+     if (userPayload?.role !== "admin") {
+         throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
+    
     const user = await prisma.user.findUnique({
         where: {
             id: userId
@@ -31,13 +38,16 @@ const getSingleUserService = async(userId: string): Promise<User> => {
     })
 
     if (!user) {
-        throw new ApiError(httpStatus.NOT_FOUND, "User not found")
+        throw new ApiError(httpStatus.NOT_FOUND, "User not found");
     }
 
     return user;
 }
 
-const updateUserService = async (userId: string, user: User): Promise<User> => {
+const updateUserService = async (userId: string, userPayload: JwtPayload | null, user: User): Promise<User> => {
+    if (userPayload?.role !== "admin") {
+        throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
     const updatedUser = await prisma.user.update({
         where: {
             id: userId
@@ -48,7 +58,10 @@ const updateUserService = async (userId: string, user: User): Promise<User> => {
     return updatedUser
 }
 
-const deleteUserService = async (userId: string): Promise<User> => {
+const deleteUserService = async (userId: string, userPayload: JwtPayload | null): Promise<User> => {
+    if (userPayload?.role !== "admin") {
+        throw new ApiError(httpStatus.FORBIDDEN, "FORBIDDEN");
+    }
     const user = await prisma.user.delete({
         where: {
             id: userId
